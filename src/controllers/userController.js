@@ -12,4 +12,4 @@ class UserController {
   }
 }
 
-module.exports = LoginController;
+module.exports = UserController;
