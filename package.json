@@ -4,6 +4,7 @@
   "description": "Diary API",
   "main": "src/server.js",
   "scripts": {
+    "dev": "nodemon .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
