@@ -1,3 +1,5 @@
+const { removeWhiteSpaces } = require("../utils");
+
 class ValidationService {
   constructor(res) {
     this.res = res;
@@ -10,13 +12,6 @@ class ValidationService {
       isValid: false,
     };
     this.res.status(status).send(body);
-  }
-
-  treatUserEmail(userEmail) {
-    // Tratar email retirando os espaços em branco
-    const regexWhiteSpace = /\s+/g;
-    const treatedUserEmail = userEmail.replace(regexWhiteSpace, "");
-    return treatedUserEmail;
   }
 
   // Verificar se os termos e condições foram aceitos
@@ -59,7 +54,7 @@ class ValidationService {
 
   verifyUserData(data, userFlow) {
     const { userName, userEmail, userPassword, userTermsAndConditions } = data;
-    const treatedUserEmail = this.treatUserEmail(userEmail);
+    const treatedUserEmail = removeWhiteSpaces(userEmail);
     const invalidTerms = this._verifyTermsAndConditions(userTermsAndConditions);
     const invalidField = this._verifyMissingFields(data, userFlow);
     const invalidEmail = this._verifyUserEmail(treatedUserEmail);
