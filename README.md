@@ -46,6 +46,51 @@ npm install
 npm run dev
 ```
 
+### SOBRE AS DEPENDÊNCIAS:
+
+O projeto possui uma quantidade razoavel de dependências, mas a maioria é bem simples e padrão de um projeto express.
+
+A maioria pode ser instalar apenas com o npm install, mas no caso do postgresql será necessário instalar em sua máquina e criar o banco manualmente.
+
+### CRIANDO O BANCO PGSQL:
+
+- Siga as instruções de instalação para o seu sistema operacional no site oficial do postgresql.
+- Logue com o usuário postgres
+
+```bash
+psql -U postgres
+```
+
+- Crie uma tabela com o nome "my_secret_diary":
+
+```sql
+CREATE DATABASE my_secret_diary;
+```
+
+- Criando uma migration:
+
+```bash
+npx knex migrate:make nome_da_migration
+```
+
+- Rodando as migrations:
+
+```bash
+npx knex migrate:latest
+```
+
+- Criando novas seeds:
+
+```bash
+npx knex seed:make num_nome_da_seed
+```
+
+- Rodando as seeds:
+
+```bash
+npx knex seed:run
+```
+
 ### Rotas:
 
 - [ GET ] Raiz - Retorna informações úteis sobre o estado do servidor e a documentação das rotas
