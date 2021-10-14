@@ -1,4 +1,4 @@
-const { removeWhiteSpaces } = require("../utils");
+const { treatText } = require("../utils");
 
 class ValidationService {
   constructor(res) {
@@ -54,7 +54,7 @@ class ValidationService {
 
   verifyUserData(data, userFlow) {
     const { userName, userEmail, userPassword, userTermsAndConditions } = data;
-    const treatedUserEmail = removeWhiteSpaces(userEmail);
+    const treatedUserEmail = treatText(userEmail);
     const invalidTerms = this._verifyTermsAndConditions(userTermsAndConditions);
     const invalidField = this._verifyMissingFields(data, userFlow);
     const invalidEmail = this._verifyUserEmail(treatedUserEmail);
