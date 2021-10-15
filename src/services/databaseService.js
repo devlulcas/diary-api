@@ -29,6 +29,21 @@ class DatabaseService {
       throw error;
     }
   }
+
+  async updateUser(userId, newData) {
+    try {
+      if (!userId) throw new Error("Could not change user data, empty user id");
+      const { username, email, password } = newData;
+      await knex("user")
+        .where({ id: userId })
+        .update({ username, email, password });
+      const user = await this.findUser(username, email);
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
 
 module.exports = DatabaseService;
