@@ -3,9 +3,12 @@ class DatabaseService {
   // OPERAÇÕES RELACIONADAS AOS USUÁRIOS
   async createNewUser(username, email, password) {
     // Caso algum dos dados bata com um existente devemos parar por aqui
-    const emailIsBeingUsed = await knex("user").where({ email }).select("id");
-    const nameIsBeingUsed = await knex("user").where({ username }).select("id");
-    if (emailIsBeingUsed.length || nameIsBeingUsed.length) {
+    const userId = await knex("user")
+      .select("id")
+      .where({ email })
+      .orWhere({ username });
+
+    if (userId.length) {
       const errorMessage = "Someone already took this email or username";
       return { errorMessage, error: true };
     }
