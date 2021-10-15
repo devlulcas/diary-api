@@ -44,6 +44,28 @@ class DatabaseService {
       throw error;
     }
   }
+
+  // OPERAÇÕES RELACIONADAS AOS DIÁRIOS
+  async createNewDiary(userId, path) {
+    try {
+      if (!userId) throw new Error("Could not create diary, empty user id");
+      await knex("diary").insert({ user_id: userId, path });
+      const diary = await this.findDiary(userId);
+      return diary;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findDiaryPath(userId) {
+    try {
+      if (!userId) throw new Error("Could not find diary, empty user id");
+      const diaryPath = await knex("diary").where({ user_id: userId })[0];
+      return diaryPath;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = DatabaseService;
