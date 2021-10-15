@@ -66,6 +66,58 @@ class DatabaseService {
       throw error;
     }
   }
+
+  // OPERAÇÕES RELACIONADAS AS CONFIGURAÇÕES
+  async createNewConfig(userId, userConfig) {
+    try {
+      // Se os dados passados não forem os desejados devemos retornar erros
+      if (!userId) throw new Error("Could not create config, empty user id");
+      const { colorScheme } = userConfig;
+      if (typeof colorScheme != "number") {
+        throw new Error("Color scheme has to be a number");
+      }
+      // Caso contrário podemos cadastrar as configurações
+      await knex("config").insert({
+        user_id: userId,
+        color_scheme: colorScheme,
+      });
+      const config = await this.findConfig(userId);
+      return config;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findConfig(userId) {
+    try {
+      // Se os dados passados não forem os desejados devemos retornar erros
+      if (!userId) throw new Error("Could not create config, empty user id");
+      // Caso contrário seguimos com a consulta
+      const config = await knex("config").where({ user_id: userId })[0];
+      return config;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateConfig(userId, newUserConfig) {
+    try {
+      // Se os dados passados não forem os desejados devemos retornar erros
+      if (!userId) throw new Error("Could not create config, empty user id");
+      const { colorScheme } = newUserConfig;
+      if (typeof colorScheme != "number") {
+        throw new Error("Color scheme has to be a number");
+      }
+      // Caso contrário seguimos com o update
+      await knex("config")
+        .where({ user_id: userId })
+        .update({ color_scheme: colorScheme });
+      const updatedConfig = await this.findConfig(userId);
+      return updatedConfig;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = DatabaseService;
