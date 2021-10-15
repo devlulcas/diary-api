@@ -40,6 +40,27 @@ class UserService {
     }
   }
 
+  // Responsável por alterar as informações atuais de um usuário
+  async update(newUserData) {
+    try {
+      // Data
+      const { userName, userEmail, userPassword } = newUserData;
+      const treatedData = {
+        username: treatText(userName),
+        email: treatText(userEmail),
+        password: await this._hashPassword(userPassword),
+      };
+      // Retorna os dados atualizados do usuário
+      const updatedUser = await this._databaseService.updateUser(
+        userId,
+        treatedData
+      );
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Responsável por tornar o armazenamento de senhas mais seguro
   async _hashPassword(userPassword) {
     try {
