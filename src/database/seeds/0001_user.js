@@ -17,6 +17,12 @@ exports.seed = function (knex) {
           password:
             "$2a$10$R24l9gn5ajAqpEEXY04AQevNaor8QH08WSGfYoNIiGjQUUHt/CLki",
         },
+        {
+          username: "toast",
+          email: "toast@toast.com",
+          password:
+            "$2a$10$R24l9gn5ajAqpEEXY04AQevNaor8QH08WSGfYoNIiGjQUUHt/CLki",
+        },
       ]);
     });
 };
