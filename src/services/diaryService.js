@@ -1,6 +1,6 @@
 const DatabaseService = require("../services/databaseService");
 const path = require("path");
-const fs = require("fs");
+const { writeFile, createReadStream, createWriteStream } = require("fs");
 
 class DiaryService {
   // Criar diário pela primeira vez
@@ -19,8 +19,8 @@ class DiaryService {
       __dirname,
       "..",
       "..",
-      "/content",
-      "/diaries",
+      "content",
+      "diaries",
       diaryFilename
     );
     return fullPath;
@@ -29,9 +29,9 @@ class DiaryService {
   // Utilizado para criar o arquivo de diário apenas quando um novo usuário surge
   async create() {
     try {
-      fs.writeFile(this.diaryPath, "Querido diário...", (error) => {
+      writeFile(this.diaryPath, "Querido diário...", (error) => {
         if (error) {
-          console.log(err);
+          console.log(error);
           throw new Error("Could not proceed file operation");
         }
       });
@@ -47,12 +47,8 @@ class DiaryService {
   // Responsável por pegar os dados do banco de dados a partir de dados tratados
   async get() {
     try {
-      const readStream = fs.createReadStream(this.diaryPath, {
+      return createReadStream(this.diaryPath, {
         encoding: "utf-8",
-      });
-      // Retorna pedaços de dados para serem entregues ao usuário
-      readStream.on("data", (chunk) => {
-        return chunk;
       });
     } catch (error) {
       throw error;
@@ -62,7 +58,7 @@ class DiaryService {
   // Responsável por alterar as informações atuais de um usuário
   async update(textContent) {
     try {
-      fs.writeFile(this.diaryPath, textContent, (error) => {
+      writeFile(this.diaryPath, textContent, (error) => {
         if (error) {
           console.log(err);
           throw new Error("Could not proceed file operation");
