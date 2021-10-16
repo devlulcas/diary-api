@@ -18,6 +18,11 @@ app.use("/user", userRouter);
 app.use("/diary", diaryRouter);
 app.use("/config", configRouter);
 
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({ error: error.message });
+});
+
 // RUN
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
