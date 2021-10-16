@@ -65,15 +65,6 @@ class UserService {
     }
   }
 
-  // Verifica se a senha recebida é compatível com a armazenada no banco de dados
-  async _isCorrectPassword(userPassword, storedHashedPassword) {
-    try {
-      return await bcrypt.compare(userPassword, storedHashedPassword);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   // Retorna os dados tratados
   _getTreatedData(userName, userEmail) {
     return [treatText(userName), treatText(userEmail)];
