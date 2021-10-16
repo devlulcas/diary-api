@@ -6,6 +6,9 @@ class DiaryService {
   // Criar diário pela primeira vez
   constructor(userId) {
     this._databaseService = new DatabaseService();
+    if (!Number.isInteger(userId)) {
+      throw new Error("User id needs to be an integer");
+    }
     this.userId = userId;
     this.diaryPath = this._diaryPath();
   }
