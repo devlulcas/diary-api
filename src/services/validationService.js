@@ -15,10 +15,10 @@ class ValidationService {
 
   // Verificar se há campos vazios (Chamar depois de verifyTermsAndConditions)
   _verifyMissingFields(data, userFlow) {
-    let userData = [data.userEmail, data.userPassword];
+    let userData = [data.userName, data.userEmail, data.userPassword];
 
     if (userFlow == "register") {
-      userData.push(data.userName, data.userTermsAndConditions);
+      userData.push(data.userTermsAndConditions);
     }
 
     // Não podemos seguir se algum campo estiver vazio
@@ -33,8 +33,8 @@ class ValidationService {
   // Verificar se um email é válido e retornar o email tratado caso realmente seja
   _verifyUserEmail(userEmail) {
     // Verificar se a estrutura do email corresponde a esta: _@_._
-    const regexEmailEstruture = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = regexEmailEstruture.test(userEmail);
+    const regexEmailStructure = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = regexEmailStructure.test(userEmail);
     return !isValid;
   }
 
@@ -44,7 +44,7 @@ class ValidationService {
   }
 
   verifyUserData(data, userFlow) {
-    const { userName, userEmail, userPassword, userTermsAndConditions } = data;
+    const { userEmail, userPassword, userTermsAndConditions } = data;
     const treatedUserEmail = treatText(userEmail);
     const invalidTerms = this._verifyTermsAndConditions(userTermsAndConditions);
     const invalidField = this._verifyMissingFields(data, userFlow);
