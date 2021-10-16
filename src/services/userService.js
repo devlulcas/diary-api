@@ -16,11 +16,10 @@ class UserService {
       const treatedData = this._getTreatedData(userName, userEmail);
       const treatedPassword = await this._hashPassword(userPassword);
       // Retorna usuário recém criado ou erro
-      const newUser = await this._databaseService.createNewUser(
+      return await this._databaseService.createNewUser(
         ...treatedData,
         treatedPassword
       );
-      return newUser;
     } catch (error) {
       throw error;
     }
@@ -33,15 +32,14 @@ class UserService {
       const { userName, userEmail } = userData;
       const treatedData = this._getTreatedData(userName, userEmail);
       // Retorna usuário já existente
-      const existingUser = await this._databaseService.findUser(...treatedData);
-      return existingUser;
+      return await this._databaseService.findUser(...treatedData);
     } catch (error) {
       throw error;
     }
   }
 
   // Responsável por alterar as informações atuais de um usuário
-  async update(newUserData) {
+  async update(userId, newUserData) {
     try {
       // Data
       const { userName, userEmail, userPassword } = newUserData;
@@ -51,11 +49,7 @@ class UserService {
         password: await this._hashPassword(userPassword),
       };
       // Retorna os dados atualizados do usuário
-      const updatedUser = await this._databaseService.updateUser(
-        userId,
-        treatedData
-      );
-      return updatedUser;
+      return await this._databaseService.updateUser(userId, treatedData);
     } catch (error) {
       throw error;
     }
@@ -65,8 +59,7 @@ class UserService {
   async _hashPassword(userPassword) {
     try {
       const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(userPassword, salt);
-      return hashedPassword;
+      return await bcrypt.hash(userPassword, salt);
     } catch (error) {
       throw error;
     }
@@ -83,9 +76,7 @@ class UserService {
 
   // Retorna os dados tratados
   _getTreatedData(userName, userEmail) {
-    const treatedUsername = treatText(userName);
-    const treatedEmail = treatText(userEmail);
-    return [treatedUsername, treatedEmail];
+    return [treatText(userName), treatText(userEmail)];
   }
 }
 
