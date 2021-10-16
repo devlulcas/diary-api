@@ -5,15 +5,6 @@ class ValidationService {
     this.res = res;
   }
 
-  errorLog(message) {
-    const status = 403;
-    const body = {
-      error: message,
-      isValid: false,
-    };
-    this.res.status(status).send(body);
-  }
-
   // Verificar se os termos e condições foram aceitos
   _verifyTermsAndConditions(userTermsAndConditions) {
     if (userTermsAndConditions == false || userTermsAndConditions == "false") {
@@ -59,52 +50,30 @@ class ValidationService {
     const invalidField = this._verifyMissingFields(data, userFlow);
     const invalidEmail = this._verifyUserEmail(treatedUserEmail);
     const invalidPassword = this._verifyPassword(userPassword);
-    let message = "everything is ok";
-    let isDataValid = true;
+    let message;
 
     // A execução não deve continuar se algum desses casos acontecer
     if (userFlow == "register") {
       if (invalidTerms) {
         message = "user refused therms and conditions";
-        isDataValid = false;
-        return {
-          isDataValid,
-          message,
-        };
+        throw new Error(message);
       }
     }
 
     if (invalidField) {
       message = "there is a parameter missing in you request";
-      isDataValid = false;
-      return {
-        isDataValid,
-        message,
-      };
+      throw new Error(message);
     }
 
     if (invalidEmail) {
       message = "invalid email";
-      isDataValid = false;
-      return {
-        isDataValid,
-        message,
-      };
+      throw new Error(message);
     }
 
     if (invalidPassword) {
       message = "password too short";
-      isDataValid = false;
-      return {
-        isDataValid,
-        message,
-      };
+      throw new Error(message);
     }
-
-    return {
-      isDataValid,
-      message,
-    };
   }
 }
 
