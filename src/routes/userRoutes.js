@@ -5,6 +5,10 @@ const router = express.Router();
 const UserController = require("../controllers/userController");
 const userController = new UserController();
 
+// Services
+const AuthService = require("../services/authService");
+const authService = new AuthService();
+
 // Register
 router.post("/register", userController.registerUser);
 
@@ -12,6 +16,6 @@ router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 
 // Update
-router.post("/update:id", userController.updateUser);
+router.post("/update:id", authService.verifyToken, userController.updateUser);
 
 module.exports = router;

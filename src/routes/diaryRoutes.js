@@ -5,8 +5,12 @@ const router = express.Router();
 const DiaryController = require("../controllers/diaryController");
 const diaryController = new DiaryController();
 
+// Services
+const AuthService = require("../services/authService");
+const authService = new AuthService();
+
 // Diary
-router.get("/", diaryController.getDiaryContent);
-router.put("/", diaryController.updateDiaryContent);
+router.get("/", authService.verifyToken, diaryController.getDiaryContent);
+router.put("/", authService.verifyToken, diaryController.updateDiaryContent);
 
 module.exports = router;
