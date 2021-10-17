@@ -45,24 +45,23 @@ class DiaryService {
   }
 
   // Responsável por pegar os dados do banco de dados a partir de dados tratados
-  async get() {
+  get() {
     try {
-      return createReadStream(this.diaryPath, {
-        encoding: "utf-8",
-      });
+      return createReadStream(this._diaryPath, { encoding: "utf-8" });
     } catch (error) {
       throw error;
     }
   }
 
   // Responsável por alterar as informações atuais de um usuário
-  async update(textContent) {
+  update(textChunk) {
     try {
-      writeFile(this.diaryPath, textContent, (error) => {
-        if (error) {
-          console.log(err);
-          throw new Error("Could not proceed file operation");
-        }
+      const diaryWriteStream = createWriteStream(this._diaryPath, {
+        encoding: "utf-8",
+      });
+      diaryWriteStream.write(textChunk, (error) => {
+        console.log(error);
+        throw error;
       });
     } catch (error) {
       throw error;
