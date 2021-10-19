@@ -80,7 +80,7 @@ class DatabaseService {
 
       // Precisamos fazer isso para selecionar apenas o texto do sussurro
       whisper = whisper.rows[0].whisper;
-      if (!whisper) throw new Error("No whispers...");
+      if (!whisper[0]) throw new Error("No whispers...");
       return whisper;
     } catch (error) {
       throw error;
