@@ -100,7 +100,7 @@ class DatabaseService {
         user_id: userId,
         color_scheme: colorScheme,
       });
-      return await this.findConfig(userId);
+      return true;
     } catch (error) {
       throw error;
     }
@@ -119,14 +119,15 @@ class DatabaseService {
     try {
       // Se os dados passados não forem os desejados devemos retornar erros
       const { colorScheme } = newUserConfig;
-      if (Number.isInteger(colorScheme)) {
+      console.log(">>>>", newUserConfig, typeof colorScheme);
+      if (!Number.isInteger(colorScheme)) {
         throw new Error("Color scheme has to be a number");
       }
       // Caso contrário seguimos com o update
       await knex("config")
         .where({ user_id: userId })
         .update({ color_scheme: colorScheme });
-      return await this.findConfig(userId);
+      return true;
     } catch (error) {
       throw error;
     }
