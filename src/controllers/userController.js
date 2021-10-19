@@ -20,7 +20,7 @@ class UserController {
       await diaryService.create();
       // Criamos também a configuração padrão do usuário
       const configService = new ConfigService(id);
-      await configService.create();
+      await configService.create({ userConfig: { colorScheme: 0 } });
       // Com os dados em mão retornamos um JWT diretamente, afinal o usuário foi criado agora
       const authService = new AuthService();
       const jwt = await authService.getToken(id, true);
