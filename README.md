@@ -3,7 +3,7 @@
   <img src="https://img.shields.io/static/v1?label=EXPRESS&labelColor=24363C&message=JS&color=DFE2DF&logo=express&logoColor=DFE2DF&style=for-the-badge">
   <img src="https://img.shields.io/static/v1?label=dev&labelColor=24363C&message=nodemon&color=DFE2DF&logo=nodemon&logoColor=DFE2DF&style=for-the-badge">
   <img src="https://img.shields.io/static/v1?label=psql&labelColor=24363C&message=knexjs&color=DFE2DF&logo=postgresql&logoColor=DFE2DF&style=for-the-badge">
-  <img src="https://img.shields.io/static/v1?label=%E2%98%A0%EF%B8%8F%20V%200.1&labelColor=DA3131&message=INCOMPLETO&color=DA3131&logo=&logoColor=DFE2DF&style=for-the-badge">
+  <img src="https://img.shields.io/static/v1?label=V 1.0&labelColor=24363C&message=OK&color=FFAF0&logo=&logoColor=00000&style=for-the-badge">
 </div>
 <hr>
 <h1 align="center">📖 DIARY API 📖</h1>
@@ -38,6 +38,30 @@ git clone https://github.com/devlulcas/diary-api.git
 
 ```bash
 npm install
+```
+
+- Logue com o usuário postgres
+
+```bash
+psql -U postgres
+```
+
+- Crie uma tabela com o nome "my_secret_diary":
+
+```sql
+CREATE DATABASE my_secret_diary;
+```
+
+- Rodando as migrations:
+
+```bash
+npx knex migrate:latest
+```
+
+- Gerando a chave de assinatura dos tokens:
+
+```bash
+npm run secret
 ```
 
 - Execute o comando a seguir para executar a API com o nodemon:
@@ -93,50 +117,42 @@ npx knex seed:run
 
 ### Rotas:
 
-- [ GET ] Raiz - Retorna informações úteis sobre o estado do servidor e a documentação das rotas
+- [ GET ] Raiz - Retorna informações úteis sobre o estado do servidor:
 
-```
-/
-```
+`/`
 
-- [ POST ] Registo de usuário - Recebe informações de cadastro de usuário como nome, email, senha, data de nascimento e confirmação dos termos e serviços em um json.
+- [ POST ] Registo de usuário - Recebe informações de cadastro de usuário como nome de usuário, email, senha e confirmação dos termos e serviços em um json:
 
-```
-/user/register
-```
+`/user/register`
 
-- [ POST ] Entrada de usuário - Recebe informações de cadastro de usuário como email e senha em um json.
+- [ POST ] Entrada de usuário - Recebe informações de cadastro de usuário como nome de usuário e senha em um json.
 
-```
-/user/login
-```
+`/user/login`
 
-- [ PUT ] Atualização de usuário - Recebe o email e senha atual e um email e senha novos em um json.
+- [ PUT ] Atualização de usuário - Recebe nome de usuário, email e senha atual e um nome de usuário, email e senha novos em um json:
 
-```
-/user/update
-```
+`/user/update`
 
-- [ GET ] Leitura do diário - Realiza um fluxo de dados do arquivo de texto no backend para o frontend
+- [ GET ] Leitura do diário - Realiza um fluxo de dados do arquivo de texto no backend para o frontend:
 
-```
-/diary
-```
+`/diary`
 
-- [ PUT ] Escrita no diário - Realiza um fluxo de dados do campo de texto do frontend para o arquivo de texto no backend apenas com os valores de atualização
+- [ PUT ] Escrita no diário - Realiza um fluxo de dados do campo de texto do frontend para o arquivo de texto no backend:
 
-```
-/diary
-```
+`/diary`
+
+- [ GET ] Leitura de sussurro - Retorna um sussurro aleatório do banco de dados:
+
+`/whisper`
+
+- [ POST ] Criação de sussurro - Recebe uma mensagem curta e grava no banco de dados
+
+`/whisper`
 
 - [ GET ] Ver configuração do usuário - Retorna um json com configurações do usuário, como por exemplo um tema de cores
 
-```
-/config
-```
+`/config`
 
 - [ PUT ] Altera configuração do usuário - Recebe um json de configurações do usuário, não possuí rota POST pois uma configuração padrão já é criada juntamente com o perfil do usuário
 
-```
-/config
-```
+`/config`
