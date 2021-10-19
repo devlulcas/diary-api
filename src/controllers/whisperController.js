@@ -17,7 +17,7 @@ class WhisperController {
     try {
       const whisperService = new WhisperService();
       const whisper = await whisperService.get();
-      res.json({ success: true, whisper });
+      res.json({ success: true, status: "GOT WHISPER", whisper });
     } catch (error) {
       console.log(error);
       next(error);
