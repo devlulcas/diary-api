@@ -2,6 +2,7 @@ const ValidationService = require("../services/validationService");
 const UserService = require("../services/userService");
 const DiaryService = require("../services/diaryService");
 const AuthService = require("../services/authService");
+const ConfigService = require("../services/configService");
 
 class UserController {
   // Registro do usuário completo (com validação)
@@ -17,10 +18,15 @@ class UserController {
       // Caso a operação seja bem sucedida prosseguimos criando o diário
       const diaryService = new DiaryService(id);
       await diaryService.create();
+      // Criamos também a configuração padrão do usuário
+      const configService = new ConfigService(id);
+      await configService.create();
       // Com os dados em mão retornamos um JWT diretamente, afinal o usuário foi criado agora
       const authService = new AuthService();
       const jwt = await authService.getToken(id, true);
-      return res.status(201).send({ status: "OK REGISTERED", jwt });
+      return res
+        .status(201)
+        .json({ success: true, status: "OK REGISTERED", jwt });
     } catch (error) {
       console.log(error);
       next(error);
@@ -45,7 +51,7 @@ class UserController {
         password
       );
       const jwt = await authService.getToken(id, isAuthorized);
-      return res.send({ status: "OK LOGGED IN", jwt });
+      return res.json({ success: true, status: "OK LOGGED IN", jwt });
     } catch (error) {
       next(error);
     }
@@ -64,7 +70,7 @@ class UserController {
       const user = await userService.update(userId, userData);
       // Tudo correu como o planejado
       const successMessage = "OK CHANGED";
-      return res.send({ status: successMessage, user });
+      return res.json({ success: true, status: successMessage, user });
     } catch (error) {
       next(error);
     }
