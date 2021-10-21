@@ -13,8 +13,11 @@ class UserService {
     try {
       // Data
       const { userName, userEmail, userPassword } = userData;
-      const treatedData = this._getTreatedData(userName, userEmail);
-      const treatedPassword = await this._hashPassword(userPassword);
+      const treatedData = await this.getTreatedData(
+        userName,
+        userEmail,
+        userPassword
+      );
       // Retorna usuário recém criado ou erro
       return await this._databaseService.createNewUser(
         ...treatedData,
