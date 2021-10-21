@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { readFileSync } = require("fs");
 const { join } = require("path");
@@ -32,15 +31,6 @@ class AuthService {
       req.userId = decoded.id;
       next();
     });
-  }
-
-  // Verifica se a senha recebida é compatível com a armazenada no banco de dados
-  async verifyUser(userPassword, storedHashedPassword) {
-    try {
-      return await bcrypt.compare(userPassword, storedHashedPassword);
-    } catch (error) {
-      throw error;
-    }
   }
 }
 
