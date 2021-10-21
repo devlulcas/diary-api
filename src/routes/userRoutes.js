@@ -16,6 +16,6 @@ router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 
 // Update
-router.post("/update:id", authService.verifyToken, userController.updateUser);
+router.post("/update", authService.verifyToken, userController.updateUser);
 
 module.exports = router;
