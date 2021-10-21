@@ -53,7 +53,20 @@ class UserService {
         newUserPassword
       );
       // Retorna os dados atualizados do usuário
-      return await this._databaseService.updateUser(userId, treatedData);
+      return await this.data.updateUser(userId, treatedData);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Retorna os dados tratados
+  async getTreatedData(userName, userEmail, userPassword) {
+    try {
+      return [
+        treatText(userName),
+        treatText(userEmail),
+        await this.hashPassword(userPassword),
+      ];
     } catch (error) {
       throw error;
     }
