@@ -1,11 +1,10 @@
 const { treatText } = require("../utils");
-
-const DatabaseService = require("../services/databaseService");
+const UserData = require("./data/userData");
 const bcrypt = require("bcryptjs");
 
 class UserService {
   constructor() {
-    this._databaseService = new DatabaseService();
+    this.data = new UserData();
   }
 
   // Responsável por passar os dados prontos para serem inseridos no banco de dados
@@ -19,10 +18,7 @@ class UserService {
         userPassword
       );
       // Retorna usuário recém criado ou erro
-      return await this._databaseService.createNewUser(
-        ...treatedData,
-        treatedPassword
-      );
+      return await this.data.createNewUser(...treatedData); 
     } catch (error) {
       throw error;
     }
@@ -33,9 +29,9 @@ class UserService {
     try {
       // Data
       const { userName, userEmail } = userData;
-      const treatedData = this._getTreatedData(userName, userEmail);
+      const treatedData = await this.getTreatedData(userName, userEmail);
       // Retorna usuário já existente
-      return await this._databaseService.findUser(...treatedData);
+      return await this.data.findUser(...treatedData);
     } catch (error) {
       throw error;
     }
@@ -76,7 +72,7 @@ class UserService {
   }
 
   // Responsável por tornar o armazenamento de senhas mais seguro
-  async _hashPassword(userPassword) {
+  async hashPassword(userPassword) {
     try {
       const salt = await bcrypt.genSalt();
       return await bcrypt.hash(userPassword, salt);
