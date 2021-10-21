@@ -23,7 +23,7 @@ class AuthService {
 
   // AUTH MIDDLEWARE
   verifyToken(req, res, next) {
-    const token = req.headers["authorization"];
+    const token = req.cookies.jwt;
     if (!token) throw new Error("No token provided. Cannot proceed");
     // Retorna o id do usuário caso tenha autorização
     jwt.verify(token, secret, (error, decoded) => {
