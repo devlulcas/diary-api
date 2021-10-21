@@ -83,6 +83,11 @@ class UserController {
       next(error);
     }
   }
+
+  logoutUser(req, res, next) {
+    res.cookie("jwt", " ", { maxAge: 1 });
+    return res.json({ success: true, status: "LOGGED OUT" });
+  }
 }
 
 module.exports = UserController;
