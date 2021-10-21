@@ -18,7 +18,7 @@ class UserService {
         userPassword
       );
       // Retorna usuário recém criado ou erro
-      return await this.data.createNewUser(...treatedData); 
+      return await this.data.createNewUser(...treatedData);
     } catch (error) {
       throw error;
     }
@@ -59,8 +59,11 @@ class UserService {
   }
 
   // Retorna os dados tratados
-  async getTreatedData(userName, userEmail, userPassword) {
+  async getTreatedData(userName, userEmail, userPassword = "") {
     try {
+      if (!userPassword) {
+        return [treatText(userName), treatText(userEmail)];
+      }
       return [
         treatText(userName),
         treatText(userEmail),
