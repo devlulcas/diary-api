@@ -6,7 +6,7 @@ class ValidationService {
   }
 
   // Verificar se os termos e condições foram aceitos
-  _verifyTermsAndConditions(userTermsAndConditions) {
+  verifyTermsAndConditions(userTermsAndConditions) {
     if (userTermsAndConditions == false || userTermsAndConditions == "false") {
       return true;
     }
@@ -14,7 +14,7 @@ class ValidationService {
   }
 
   // Verificar se há campos vazios (Chamar depois de verifyTermsAndConditions)
-  _verifyMissingFields(data, userFlow) {
+  verifyMissingFields(data, userFlow) {
     let userData = [data.userName, data.userEmail, data.userPassword];
 
     if (userFlow == "register") {
@@ -31,7 +31,7 @@ class ValidationService {
   }
 
   // Verificar se um email é válido e retornar o email tratado caso realmente seja
-  _verifyUserEmail(userEmail) {
+  verifyUserEmail(userEmail) {
     // Verificar se a estrutura do email corresponde a esta: _@_._
     const regexEmailStructure = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = regexEmailStructure.test(userEmail);
@@ -39,17 +39,17 @@ class ValidationService {
   }
 
   // Verificar se a senha é segura (contém mais de oito caracteres), se for retornar hash
-  _verifyPassword(userPassword) {
+  verifyPassword(userPassword) {
     return userPassword.length < 8;
   }
 
   verifyUserData(data, userFlow) {
     const { userEmail, userPassword, userTermsAndConditions } = data;
     const treatedUserEmail = treatText(userEmail);
-    const invalidTerms = this._verifyTermsAndConditions(userTermsAndConditions);
-    const invalidField = this._verifyMissingFields(data, userFlow);
-    const invalidEmail = this._verifyUserEmail(treatedUserEmail);
-    const invalidPassword = this._verifyPassword(userPassword);
+    const invalidTerms = this.verifyTermsAndConditions(userTermsAndConditions);
+    const invalidField = this.verifyMissingFields(data, userFlow);
+    const invalidEmail = this.verifyUserEmail(treatedUserEmail);
+    const invalidPassword = this.verifyPassword(userPassword);
     let message;
 
     // A execução não deve continuar se algum desses casos acontecer
