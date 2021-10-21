@@ -2,7 +2,6 @@ const ValidationService = require("../services/validationService");
 const UserService = require("../services/userService");
 const DiaryService = require("../services/diaryService");
 const AuthService = require("../services/authService");
-const ConfigService = require("../services/configService");
 
 class UserController {
   // Registro do usuário completo (com validação)
@@ -25,9 +24,9 @@ class UserController {
       const jwt = await authService.getToken(id, true);
 
       // Sucesso
-      return res
-        .status(201)
-        .json({ success: true, status: "OK REGISTERED", jwt });
+      const maxAgeForCookie = 1000 * 60 * 60 * 24;
+      res.cookie("jwt", jwt, { httpOnly: true, maxAge: maxAgeForCookie });
+      return res.status(201).json({ success: true, status: "OK REGISTERED" });
     } catch (error) {
       console.log(error);
       next(error);
@@ -56,7 +55,9 @@ class UserController {
       const jwt = await authService.getToken(id, isAuthorized);
 
       // Sucesso
-      return res.json({ success: true, status: "OK LOGGED IN", jwt });
+      const maxAgeForCookie = 1000 * 60 * 60 * 24;
+      res.cookie("jwt", jwt, { httpOnly: true, maxAge: maxAgeForCookie });
+      return res.json({ success: true, status: "OK LOGGED IN" });
     } catch (error) {
       next(error);
     }
