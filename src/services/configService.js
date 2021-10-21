@@ -1,28 +1,14 @@
-const DatabaseService = require("../services/databaseService");
-
+const ConfigData = require("./data/configData");
 class ConfigService {
   constructor(userId) {
-    this._databaseService = new DatabaseService();
-    if (!Number.isInteger(userId)) {
-      throw new Error("User id needs to be an integer");
-    }
+    if (!Number.isInteger(userId)) throw new Error("User has to be integer");
+    this.data = new ConfigData();
     this.userId = userId;
-  }
-
-  async create(userConfig = { colorScheme: 0 }) {
-    try {
-      return await this._databaseService.createNewConfig(
-        this.userId,
-        userConfig
-      );
-    } catch (error) {
-      throw error;
-    }
   }
 
   async get() {
     try {
-      return await this._databaseService.findConfig(this.userId);
+      return await this.data.findConfig(this.userId);
     } catch (error) {
       throw error;
     }
@@ -30,8 +16,7 @@ class ConfigService {
 
   async update(userConfig) {
     try {
-      console.log(userConfig);
-      return await this._databaseService.updateConfig(this.userId, userConfig);
+      return await this.data.updateConfig(this.userId, userConfig);
     } catch (error) {
       throw error;
     }
