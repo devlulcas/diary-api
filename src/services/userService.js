@@ -82,9 +82,13 @@ class UserService {
     }
   }
 
-  // Retorna os dados tratados
-  _getTreatedData(userName, userEmail) {
-    return [treatText(userName), treatText(userEmail)];
+  // Verifica se a senha recebida é compatível com a armazenada no banco de dados
+  async verifyUserPassword(userPassword, storedHashedPassword) {
+    try {
+      return await bcrypt.compare(userPassword, storedHashedPassword);
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
