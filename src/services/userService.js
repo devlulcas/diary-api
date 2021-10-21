@@ -39,15 +39,19 @@ class UserService {
   }
 
   // Responsável por alterar as informações atuais de um usuário
-  async update(userId, newUserData) {
+  async update(userId, oldUserData, newUserData) {
     try {
       // Data
-      const { userName, userEmail, userPassword } = newUserData;
-      const treatedData = {
-        username: treatText(userName),
-        email: treatText(userEmail),
-        password: await this._hashPassword(userPassword),
-      };
+      const { userName, userEmail, userPassword } = oldUserData;
+      const { newUserName, newUserEmail, newUserPassword } = newUserData;
+      const { password } = this.data.findUser(userName, userEmail);
+      const isAuthorized = this.verifyUserPassword(userPassword, password);
+      if (!isAuthorized) throw new Error("Wrong password");
+      const treatedData = await this.getTreatedData(
+        newUserName,
+        newUserEmail,
+        newUserPassword
+      );
       // Retorna os dados atualizados do usuário
       return await this._databaseService.updateUser(userId, treatedData);
     } catch (error) {
