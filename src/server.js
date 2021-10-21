@@ -7,6 +7,17 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+// CORS
+const cors = require("cors");
+const acceptedOrigins = process.env.ORIGINS || "*";
+app.use(
+  cors({
+    origin: acceptedOrigins,
+    methods: ["GET", "POST", "PUT"],
+    credentials: true,
+  })
+);
+
 // ROUTES
 const rootRouter = require("./routes/rootRoutes");
 const userRouter = require("./routes/userRoutes");
