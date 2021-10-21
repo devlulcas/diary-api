@@ -12,18 +12,19 @@ class UserController {
       // Validando os dados recebidos
       const validationService = new ValidationService(res);
       validationService.verifyUserData(userData, "register");
+
       // Caso os dados sejam válidos pedimos para criar o usuário
       const userService = new UserService();
-      const { id } = await userService.create(userData);
-      // Caso a operação seja bem sucedida prosseguimos criando o diário
-      const diaryService = new DiaryService(id);
+      const { id, path } = await userService.create(userData);
+      // Caso a operação seja bem sucedida prosseguimos criando o arquivo de diário
+      const diaryService = new DiaryService(path);
       await diaryService.create();
-      // Criamos também a configuração padrão do usuário
-      const configService = new ConfigService(id);
-      await configService.create({ userConfig: { colorScheme: 0 } });
+
       // Com os dados em mão retornamos um JWT diretamente, afinal o usuário foi criado agora
       const authService = new AuthService();
       const jwt = await authService.getToken(id, true);
+
+      // Sucesso
       return res
         .status(201)
         .json({ success: true, status: "OK REGISTERED", jwt });
@@ -40,17 +41,21 @@ class UserController {
       // Validando os dados recebidos
       const validationService = new ValidationService(res);
       validationService.verifyUserData(userData, "login");
+
       // Caso os dados sejam válidos pedimos para buscá-lo
       const userService = new UserService();
       const { id, password } = await userService.get(userData);
       const plainTextPassword = userData.userPassword;
+
       // Com os dados em mão retornamos um JWT se o usuário e senha estiverem corretos
       const authService = new AuthService();
-      const isAuthorized = await authService.verifyUser(
+      const isAuthorized = await userService.verifyUserPassword(
         plainTextPassword,
         password
       );
       const jwt = await authService.getToken(id, isAuthorized);
+
+      // Sucesso
       return res.json({ success: true, status: "OK LOGGED IN", jwt });
     } catch (error) {
       next(error);
@@ -60,17 +65,19 @@ class UserController {
   // Atualização de usuário completo (com validação)
   async updateUser(req, res, next) {
     try {
-      const userData = req.body;
-      const { userId } = req.params;
+      const { oldUserData, newUserData } = req.body;
+      const userId = req.userId;
       // Validando os dados recebidos
       const validationService = new ValidationService(res);
-      validationService.verifyUserData(userData, "update");
+      validationService.verifyUserData(oldUserData, "update");
+      validationService.verifyUserData(newUserData, "update");
+
       // Caso os dados sejam válidos...
       const userService = new UserService();
-      const user = await userService.update(userId, userData);
+      const user = await userService.update(userId, oldUserData, newUserData);
+
       // Tudo correu como o planejado
-      const successMessage = "OK CHANGED";
-      return res.json({ success: true, status: successMessage, user });
+      return res.json({ success: true, status: "OK CHANGED", user });
     } catch (error) {
       next(error);
     }
