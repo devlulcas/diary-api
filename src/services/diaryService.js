@@ -1,4 +1,3 @@
-const DatabaseService = require("../services/databaseService");
 const path = require("path");
 const { writeFile, createReadStream, createWriteStream } = require("fs");
 /*
@@ -11,20 +10,8 @@ ataque que atinja o sistema operacional, mas se algo assim acontecesse o diário
 problemas.
 */
 class DiaryService {
-  // Criar diário pela primeira vez
-  constructor(userId) {
-    this._databaseService = new DatabaseService();
-    if (!Number.isInteger(userId)) {
-      throw new Error("User id needs to be an integer");
-    }
-    this.userId = userId;
-    this.diaryRelativePath = this._diaryPath();
-    this.diaryAbsolutePath = path.join(__dirname, this.diaryRelativePath);
-  }
-
-  _diaryPath() {
-    const diaryFilename = `${this.userId}_diary.txt`;
-    return path.join("..", "..", "content", "diaries", diaryFilename);
+  constructor(relativePath) {
+    this.diaryAbsolutePath = path.join(__dirname, relativePath);
   }
 
   // Utilizado para criar o arquivo de diário apenas quando um novo usuário surge
@@ -36,10 +23,7 @@ class DiaryService {
           throw new Error("Could not proceed file operation");
         }
       });
-      return await this._databaseService.createNewDiary(
-        this.userId,
-        this.diaryRelativePath
-      );
+      return true;
     } catch (error) {
       throw error;
     }
