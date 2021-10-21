@@ -5,9 +5,11 @@ const PORT = process.env.PORT || 3333;
 // APP
 const express = require("express");
 const app = express();
+
+// JSON MIDDLEWARE
 app.use(express.json());
 
-// CORS
+// CORS MIDDLEWARE
 const cors = require("cors");
 const acceptedOrigins = process.env.ORIGINS || "*";
 app.use(
@@ -18,7 +20,11 @@ app.use(
   })
 );
 
-// ROUTES
+// COOKIES MIDDLEWARE
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+// ROUTER MIDDLEWARE
 const rootRouter = require("./routes/rootRoutes");
 const userRouter = require("./routes/userRoutes");
 const diaryRouter = require("./routes/diaryRoutes");
