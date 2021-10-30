@@ -16,10 +16,10 @@ class WhisperData {
     try {
       // Raw select para obter rows aleatórias
       let whisper = await knex.raw(
-        "SELECT whisper FROM whisper ORDER BY RANDOM() LIMIT 1;"
+        "SELECT whisper FROM whisper ORDER BY RANDOM() LIMIT 10;"
       );
       // Precisamos fazer isso para selecionar apenas o texto do sussurro
-      whisper = whisper.rows[0].whisper;
+      whisper = whisper.rows.map((obj) => obj.whisper);
       if (!whisper[0]) throw new Error("No whispers...");
       return whisper;
     } catch (error) {
