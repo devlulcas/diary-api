@@ -1,5 +1,10 @@
 const path = require("path");
-const { writeFile, createReadStream, createWriteStream } = require("fs");
+const {
+  writeFile,
+  createReadStream,
+  createWriteStream,
+  access,
+} = require("fs");
 /*
 O serviço de diário atualmente guarda os diários como arquivos de texto e armazena no banco de dados
 apenas o path do arquivo. Futuramente talvez eu troque isso e os diários passem a ser armazenados no
@@ -32,6 +37,13 @@ class DiaryService {
   // Responsável por pegar os dados do banco de dados a partir de dados tratados
   get() {
     try {
+      access(this.diaryAbsolutePath, (error) => {
+        if (error) {
+          console.log(error);
+          throw error;
+        }
+      });
+      
       return createReadStream(this.diaryAbsolutePath, { encoding: "utf-8" });
     } catch (error) {
       throw error;
