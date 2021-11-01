@@ -23,48 +23,49 @@ Garanta que todos os pré requisitos estejam funcionando corretamente na sua má
 - NodeJS (Versão 14+)
 - NPM
 - GIT
+- POSTGRESQL
 
 ### Passo a passo:
 
-- Se deseja colaborar com o desenvolvimento deste projeto siga o procedimento para realizar um pull request (começando pelo fork do projeto)
+- **Se deseja colaborar com o desenvolvimento deste projeto siga o procedimento para realizar um pull request**
 
-- Se deseja apenas utilizar o código ou está trabalhando em criar um cliente para a API sinta-se a vontade para clonar o repositório. Para clonar o repositório utilize o comando:
+- **Se deseja apenas utilizar o código ou está trabalhando em criar um cliente para a API sinta-se a vontade para clonar o repositório. Para clonar o repositório utilize o comando:**
 
 ```bash
 git clone https://github.com/devlulcas/diary-api.git
 ```
 
-- Entre no diretório raiz e execute o comando a seguir para instalar as dependências:
+- **Entre no diretório raiz e execute o comando a seguir para instalar as dependências:
 
 ```bash
 npm install
 ```
 
-- Logue com o usuário postgres
+- **Logue com o usuário postgres:**
 
 ```bash
 psql -U postgres
 ```
 
-- Crie uma tabela com o nome "my_secret_diary":
+- **Crie uma tabela com o nome "my_secret_diary":**
 
 ```sql
 CREATE DATABASE my_secret_diary;
 ```
 
-- Rodando as migrations:
+- **Rodando as migrations:**
 
 ```bash
 npx knex migrate:latest
 ```
 
-- Gerando a chave de assinatura dos tokens:
+- **Gerando a chave de assinatura dos tokens:**
 
 ```bash
 npm run secret
 ```
 
-- Execute o comando a seguir para executar a API com o nodemon:
+- **Execute o comando a seguir para executar a API com o nodemon:**
 
 ```bash
 npm run dev
@@ -78,81 +79,81 @@ A maioria pode ser instalar apenas com o npm install, mas no caso do postgresql 
 
 ### CRIANDO O BANCO PGSQL:
 
-- Siga as instruções de instalação para o seu sistema operacional no site oficial do postgresql.
-- Logue com o usuário postgres
+- **Siga as instruções de instalação para o seu sistema operacional no site oficial do postgresql.**
+- **Logue com o usuário postgres:**
 
 ```bash
 psql -U postgres
 ```
 
-- Crie uma tabela com o nome "my_secret_diary":
+- **Crie uma tabela com o nome "my_secret_diary":**
 
 ```sql
 CREATE DATABASE my_secret_diary;
 ```
 
-- Criando uma migration:
+- **Criando uma migration:**
 
 ```bash
 npx knex migrate:make nome_da_migration
 ```
 
-- Rodando as migrations:
+- **Rodando as migrations:**
 
 ```bash
 npx knex migrate:latest
 ```
 
-- Criando novas seeds:
+- **Criando novas seeds:**
 
 ```bash
 npx knex seed:make num_nome_da_seed
 ```
 
-- Rodando as seeds:
-
+- **Rodando as seeds:**
+Obs: não recomendo rodar as seeds, pois estão incompletas.
 ```bash
 npx knex seed:run
 ```
 
 ### Rotas:
 
-- [ GET ] Raiz - Retorna informações úteis sobre o estado do servidor:
+- **[ GET ] Raiz - Retorna informações úteis sobre o estado do servidor:**
 
 `/`
 
-- [ POST ] Registo de usuário - Recebe informações de cadastro de usuário como nome de usuário, email, senha e confirmação dos termos e serviços em um json:
+- **[ POST ] Registo de usuário - Recebe informações de cadastro de usuário como nome de usuário, email, senha e confirmação dos termos e serviços em um json:**
 
 `/user/register`
 
-- [ POST ] Entrada de usuário - Recebe informações de cadastro de usuário como nome de usuário e senha em um json.
+- **[ POST ] Entrada de usuário - Recebe informações de cadastro de usuário como nome de usuário e senha em um json.**
 
 `/user/login`
 
-- [ PUT ] Atualização de usuário - Recebe nome de usuário, email e senha atual e um nome de usuário, email e senha novos em um json:
+- **[ PUT ] Atualização de usuário - Recebe nome de usuário, email e senha atual e um nome de usuário, email e senha novos em um json:**
 
 `/user/update`
 
-- [ GET ] Leitura do diário - Realiza um fluxo de dados do arquivo de texto no backend para o frontend:
+- **[ GET ] Leitura do diário - Realiza um fluxo de dados do arquivo de texto no backend para o frontend:**
 
 `/diary`
 
-- [ PUT ] Escrita no diário - Realiza um fluxo de dados do campo de texto do frontend para o arquivo de texto no backend:
+- **[ PUT ] Escrita no diário - Realiza um fluxo de dados do campo de texto do frontend para o arquivo de texto no backend:**
 
 `/diary`
 
-- [ GET ] Leitura de sussurro - Retorna um sussurro aleatório do banco de dados:
+- **[ GET ] Leitura de sussurro - Retorna dez sussurros aleatórios do banco de dados:**
 
 `/whisper`
 
-- [ POST ] Criação de sussurro - Recebe uma mensagem curta e grava no banco de dados
+- **[ POST ] Criação de sussurro - Recebe uma mensagem curta e grava no banco de dados:**
 
 `/whisper`
 
-- [ GET ] Ver configuração do usuário - Retorna um json com configurações do usuário, como por exemplo um tema de cores
+- **[ GET ] Ver configuração do usuário - Retorna um json com configurações do usuário, como por exemplo um tema de cores:**
 
 `/config`
 
-- [ PUT ] Altera configuração do usuário - Recebe um json de configurações do usuário, não possuí rota POST pois uma configuração padrão já é criada juntamente com o perfil do usuário
+- **[ PUT ] Altera configuração do usuário - Recebe um json de configurações do usuário, não possuí rota POST pois uma configuração padrão já é criada juntamente com o perfil do usuário:**
 
 `/config`
